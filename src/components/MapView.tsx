@@ -16,11 +16,12 @@ const MapView = ({ onAreaConfirmed }: MapViewProps) => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [showLandForm, setShowLandForm] = useState(false);
   const [mapError, setMapError] = useState(false);
+  const [mapUpdateTrigger, setMapUpdateTrigger] = useState(0);
   
   // Cursor circle state
   const [mousePosition, setMousePosition] = useState<{x: number, y: number} | null>(null);
   const [circleSize, setCircleSize] = useState(40);
-  const [placedCircles, setPlacedCircles] = useState<Array<{x: number, y: number, size: number}>>([]);
+  const [placedCircles, setPlacedCircles] = useState<Array<{lng: number, lat: number, size: number}>>([]);
 
   // Initialize map only once
   useEffect(() => {
@@ -78,11 +79,10 @@ const MapView = ({ onAreaConfirmed }: MapViewProps) => {
         if (!map.current) return;
         
         const coords: [number, number] = [e.lngLat.lng, e.lngLat.lat];
-        const point = map.current.project(coords);
         
         console.log('Map clicked - placing circle');
         
-        setPlacedCircles(prev => [...prev, { x: point.x, y: point.y, size: circleSize }]);
+        setPlacedCircles(prev => [...prev, { lng: coords[0], lat: coords[1], size: circleSize }]);
         setSelectedLocation(coords);
         setAreaSelected(true);
       };
@@ -104,6 +104,15 @@ const MapView = ({ onAreaConfirmed }: MapViewProps) => {
 
       map.current.on('click', handleMapClick);
       map.current.on('mousemove', handleMouseMove);
+      
+      // Add event listeners for map movement to trigger re-rendering
+      map.current.on('move', () => {
+        setMapUpdateTrigger(prev => prev + 1);
+      });
+      
+      map.current.on('zoom', () => {
+        setMapUpdateTrigger(prev => prev + 1);
+      });
       
       // Add wheel event listener to the map container
       const container = mapContainer.current;
@@ -158,6 +167,13 @@ const MapView = ({ onAreaConfirmed }: MapViewProps) => {
     setMapLoaded(false);
     // Force a page reload to recreate the map
     window.location.reload();
+  };
+
+  // Helper function to convert geographic coordinates to screen coordinates
+  const getScreenPosition = (lng: number, lat: number) => {
+    if (!map.current) return { x: 0, y: 0 };
+    const point = map.current.project([lng, lat]);
+    return { x: point.x, y: point.y };
   };
 
   return (
@@ -219,7 +235,7 @@ const MapView = ({ onAreaConfirmed }: MapViewProps) => {
       {/* Cursor Circle - follows mouse */}
       {mousePosition && !areaSelected && (
         <div 
-          className="absolute z-20 pointer-events-none"
+          className="absolute z-[2] pointer-events-none"
           style={{
             left: `${mousePosition.x}px`,
             top: `${mousePosition.y}px`,
@@ -238,25 +254,29 @@ const MapView = ({ onAreaConfirmed }: MapViewProps) => {
       )}
       
       {/* Placed Circles - stay on map */}
-      {placedCircles.map((circle, index) => (
-        <div 
-          key={index}
-          className="absolute z-10 pointer-events-none"
-          style={{
-            left: `${circle.x}px`,
-            top: `${circle.y}px`,
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
+      {placedCircles.map((circle, index) => {
+        const screenPos = getScreenPosition(circle.lng, circle.lat);
+        // Use mapUpdateTrigger to ensure re-rendering on map movement
+        return (
           <div 
-            className="border-2 border-blue-500 rounded-full bg-blue-500/20"
+            key={`${index}-${mapUpdateTrigger}`}
+            className="absolute z-[2] pointer-events-none"
             style={{
-              width: `${circle.size}px`,
-              height: `${circle.size}px`,
+              left: `${screenPos.x}px`,
+              top: `${screenPos.y}px`,
+              transform: 'translate(-50%, -50%)',
             }}
-          />
-        </div>
-      ))}
+          >
+            <div 
+              className="border-2 border-blue-500 rounded-full bg-blue-500/20"
+              style={{
+                width: `${circle.size}px`,
+                height: `${circle.size}px`,
+              }}
+            />
+          </div>
+        );
+      })}
       
       {areaSelected && (
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-4">

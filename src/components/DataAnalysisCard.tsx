@@ -3,10 +3,16 @@ import { Card } from './ui/card';
 import { Button } from './ui/button';
 import { Separator } from './ui/separator';
 import ChatInterface from './ChatInterface';
-import { Info } from 'lucide-react';
+import { Info, Download, X } from 'lucide-react';
+import { generateAnalysisPDF } from '@/lib/pdfGenerator';
 
-const DataAnalysisCard = () => {
+interface DataAnalysisCardProps {
+  onClose?: () => void;
+}
+
+const DataAnalysisCard = ({ onClose }: DataAnalysisCardProps) => {
   const [showChat, setShowChat] = useState(false);
+  const [chatMessages, setChatMessages] = useState<any[]>([]);
 
   const recommendations = [
     {
@@ -48,9 +54,33 @@ const DataAnalysisCard = () => {
     'Google Gemini (AI Interpretation)'
   ];
 
+  const handleDownloadPDF = () => {
+    const pdfData = {
+      recommendations,
+      dataSources,
+      chatMessages,
+      location: 'Selected Analysis Area',
+      timestamp: new Date().toLocaleString()
+    };
+    
+    generateAnalysisPDF(pdfData);
+  };
+
+  const handleChatMessagesUpdate = (messages: any[]) => {
+    setChatMessages(messages);
+  };
+
   return (
     <Card className="w-full max-w-2xl h-full overflow-hidden flex flex-col slide-in-right bg-card border-primary/20 shadow-card">
-      <div className="p-6 border-b border-border bg-gradient-to-r from-primary/10 to-secondary/10">
+      <div className="p-6 border-b border-border bg-gradient-to-r from-primary/10 to-secondary/10 relative">
+        <Button
+          onClick={onClose}
+          variant="outline"
+          size="icon"
+          className="absolute top-2 right-2 bg-card/80 backdrop-blur-sm border-border hover:bg-muted"
+        >
+          <X className="h-4 w-4" />
+        </Button>
         <h1 className="text-2xl font-bold mb-2">Data Analysis: Land Recommendations</h1>
         <p className="text-sm text-muted-foreground">AI-powered geospatial intelligence for sustainable development</p>
       </div>
@@ -102,7 +132,15 @@ const DataAnalysisCard = () => {
               </div>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-6 space-y-3">
+              <Button 
+                onClick={handleDownloadPDF}
+                variant="outline"
+                className="w-full border-primary/30 text-primary hover:bg-primary/10 font-semibold"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Download Analysis Report (PDF)
+              </Button>
               <Button 
                 onClick={() => setShowChat(true)}
                 className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold"
@@ -122,7 +160,7 @@ const DataAnalysisCard = () => {
               ← Back to Analysis
             </Button>
             <div className="h-[calc(100%-3rem)]">
-              <ChatInterface />
+              <ChatInterface onMessagesUpdate={handleChatMessagesUpdate} />
             </div>
           </div>
         )}

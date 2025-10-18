@@ -1,0 +1,175 @@
+import jsPDF from 'jspdf';
+
+interface Recommendation {
+  icon: string;
+  establishment: string;
+  insight: string;
+  condition: string;
+  risk: boolean;
+}
+
+interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+  isHtml?: boolean;
+  isTable?: boolean;
+}
+
+interface PDFData {
+  recommendations: Recommendation[];
+  dataSources: string[];
+  chatMessages: ChatMessage[];
+  location?: string;
+  timestamp: string;
+}
+
+export const generateAnalysisPDF = (data: PDFData): void => {
+  const doc = new jsPDF();
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  let yPosition = 20;
+  const margin = 20;
+  const lineHeight = 7;
+  const sectionSpacing = 15;
+
+  // Helper function to add text with word wrapping
+  const addWrappedText = (text: string, x: number, y: number, maxWidth: number, fontSize: number = 10) => {
+    doc.setFontSize(fontSize);
+    const lines = doc.splitTextToSize(text, maxWidth);
+    doc.text(lines, x, y);
+    return y + (lines.length * lineHeight);
+  };
+
+  // Helper function to check if we need a new page
+  const checkNewPage = (requiredSpace: number) => {
+    if (yPosition + requiredSpace > pageHeight - margin) {
+      doc.addPage();
+      yPosition = 20;
+      return true;
+    }
+    return false;
+  };
+
+  // Header
+  doc.setFontSize(20);
+  doc.setFont('helvetica', 'bold');
+  doc.text('LandSense Analysis Report', margin, yPosition);
+  yPosition += 15;
+
+  // Subtitle
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'normal');
+  doc.text('AI-Powered Geospatial Intelligence for Sustainable Development', margin, yPosition);
+  yPosition += 10;
+
+  // Timestamp
+  doc.setFontSize(10);
+  doc.text(`Generated on: ${data.timestamp}`, margin, yPosition);
+  yPosition += 15;
+
+  // Location (if provided)
+  if (data.location) {
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Analysis Location: ${data.location}`, margin, yPosition);
+    yPosition += 10;
+  }
+
+  // Recommendations Section
+  doc.setFontSize(16);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Land Use Recommendations', margin, yPosition);
+  yPosition += 10;
+
+  data.recommendations.forEach((rec, index) => {
+    checkNewPage(40);
+    
+    // Establishment name
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`${rec.icon} ${rec.establishment}`, margin, yPosition);
+    yPosition += lineHeight;
+
+    // Insight
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    yPosition = addWrappedText(`Insight: ${rec.insight}`, margin, yPosition, pageWidth - 2 * margin);
+    yPosition += 5;
+
+    // Condition/Requirement
+    doc.setFont('helvetica', 'bold');
+    const conditionColor = rec.risk ? [255, 0, 0] : [0, 128, 0]; // Red for risk, green for safe
+    doc.setTextColor(conditionColor[0], conditionColor[1], conditionColor[2]);
+    yPosition = addWrappedText(`Requirement: ${rec.condition}`, margin, yPosition, pageWidth - 2 * margin);
+    doc.setTextColor(0, 0, 0); // Reset to black
+    yPosition += sectionSpacing;
+  });
+
+  // Data Sources Section
+  checkNewPage(30);
+  doc.setFontSize(16);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Data Sources', margin, yPosition);
+  yPosition += 10;
+
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  data.dataSources.forEach((source, index) => {
+    checkNewPage(10);
+    doc.text(`• ${source}`, margin + 10, yPosition);
+    yPosition += lineHeight;
+  });
+
+  // Chat Analysis Section (if messages exist)
+  if (data.chatMessages && data.chatMessages.length > 0) {
+    checkNewPage(30);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('AI Chat Analysis', margin, yPosition);
+    yPosition += 10;
+
+    data.chatMessages.forEach((message, index) => {
+      checkNewPage(20);
+      
+      // Message role
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'bold');
+      const roleColor = message.role === 'user' ? [0, 0, 255] : [0, 128, 0];
+      doc.setTextColor(roleColor[0], roleColor[1], roleColor[2]);
+      doc.text(`${message.role.toUpperCase()}:`, margin, yPosition);
+      doc.setTextColor(0, 0, 0); // Reset to black
+      yPosition += lineHeight;
+
+      // Message content
+      doc.setFont('helvetica', 'normal');
+      let content = message.content;
+      
+      // Handle special content types
+      if (message.isTable) {
+        try {
+          const tableData = JSON.parse(content);
+          content = tableData.intro || content;
+        } catch (e) {
+          // If parsing fails, use original content
+        }
+      }
+      
+      // Clean HTML tags and format text
+      content = content.replace(/<[^>]*>/g, '').replace(/\*\*(.*?)\*\*/g, '$1');
+      
+      yPosition = addWrappedText(content, margin + 10, yPosition, pageWidth - 2 * margin - 10);
+      yPosition += sectionSpacing;
+    });
+  }
+
+  // Footer
+  const footerY = pageHeight - 15;
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Generated by LandSense - AI-Powered Geospatial Intelligence Platform', margin, footerY);
+  doc.text('For more information, visit the LandSense platform', margin, footerY + 5);
+
+  // Save the PDF
+  const fileName = `landsense-analysis-${new Date().toISOString().split('T')[0]}.pdf`;
+  doc.save(fileName);
+};

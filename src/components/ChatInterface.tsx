@@ -4,6 +4,7 @@ import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
 import { Send } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -12,10 +13,21 @@ interface Message {
   isTable?: boolean;
 }
 
-const ChatInterface = () => {
+interface ChatInterfaceProps {
+  onMessagesUpdate?: (messages: Message[]) => void;
+}
+
+const ChatInterface = ({ onMessagesUpdate }: ChatInterfaceProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const navigate = useNavigate();
+
+  // Notify parent component when messages change
+  useEffect(() => {
+    if (onMessagesUpdate) {
+      onMessagesUpdate(messages);
+    }
+  }, [messages, onMessagesUpdate]);
 
   const hotelResponse = {
     intro: '✅ Yes, a hotel (or resort) is strongly recommended based on the area\'s favorable natural assets (stable coast, clear water), which signal high tourism value.\n\nHowever, strict compliance is REQUIRED. To protect your investment from environmental risks (storms, erosion) and legal issues (pollution), you must build with resilience and sustainability measures integrated into the design.',
