@@ -109,23 +109,31 @@ If you wish to establish a school around your chosen area, there are safer alter
               key={idx}
               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              <div
-                className={`max-w-[80%] rounded-lg p-3 ${
-                  message.role === 'user'
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted text-foreground'
-                }`}
-                onClick={handleLinkClick}
-                dangerouslySetInnerHTML={
-                  message.isHtml 
-                    ? { __html: message.content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }
-                    : undefined
-                }
-              >
-                {!message.isHtml && message.content.split('\n').map((line, i) => (
-                  <p key={i}>{line}</p>
-                ))}
-              </div>
+              {message.isHtml ? (
+                <div
+                  className={`max-w-[80%] rounded-lg p-3 ${
+                    message.role === 'user'
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted text-foreground'
+                  }`}
+                  onClick={handleLinkClick}
+                  dangerouslySetInnerHTML={{
+                    __html: message.content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                  }}
+                />
+              ) : (
+                <div
+                  className={`max-w-[80%] rounded-lg p-3 ${
+                    message.role === 'user'
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted text-foreground'
+                  }`}
+                >
+                  {message.content.split('\n').map((line, i) => (
+                    <p key={i}>{line}</p>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>
