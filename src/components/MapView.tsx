@@ -17,7 +17,7 @@ const MapView = ({ onAreaConfirmed }: MapViewProps) => {
   const drawStart = useRef<[number, number] | null>(null);
 
   useEffect(() => {
-    if (!mapContainer.current) return;
+    if (!mapContainer.current || map.current) return;
 
     mapboxgl.accessToken = 'pk.eyJ1Ijoia2F2ZXJzZSIsImEiOiJjbTI3aTljc3QxZjRvMmxwdWlqN2p3cWhuIn0.tyq03HoWjNUDgw7m9RnweQ';
     
@@ -63,17 +63,17 @@ const MapView = ({ onAreaConfirmed }: MapViewProps) => {
     });
 
     // Handle click to start drawing circle
-    map.current.on('mousedown', (e) => {
+    const handleMouseDown = (e: mapboxgl.MapMouseEvent) => {
       if (!map.current) return;
       setIsDrawing(true);
       const coords: [number, number] = [e.lngLat.lng, e.lngLat.lat];
       drawStart.current = coords;
       setCircleCenter(coords);
       setCircleRadius(20);
-    });
+    };
 
     // Handle mouse move to adjust circle size
-    map.current.on('mousemove', (e) => {
+    const handleMouseMove = (e: mapboxgl.MapMouseEvent) => {
       if (!isDrawing || !drawStart.current || !map.current) return;
       
       const start = map.current.project(drawStart.current);
@@ -83,15 +83,19 @@ const MapView = ({ onAreaConfirmed }: MapViewProps) => {
       );
       
       setCircleRadius(Math.max(20, Math.min(distance, 100)));
-    });
+    };
 
     // Handle mouse up to finish drawing
-    map.current.on('mouseup', () => {
+    const handleMouseUp = () => {
       if (isDrawing && circleCenter) {
         setIsDrawing(false);
         setAreaSelected(true);
       }
-    });
+    };
+
+    map.current.on('mousedown', handleMouseDown);
+    map.current.on('mousemove', handleMouseMove);
+    map.current.on('mouseup', handleMouseUp);
 
     return () => {
       map.current?.remove();
@@ -125,11 +129,11 @@ const MapView = ({ onAreaConfirmed }: MapViewProps) => {
   };
 
   return (
-    <div className="relative w-full h-screen">
-      <div ref={mapContainer} className="absolute inset-0 scanning-overlay" />
+    <div className="relative w-full h-full">
+      <div ref={mapContainer} className="absolute inset-0" />
       
       {!areaSelected && (
-        <div className="absolute top-24 left-1/2 -translate-x-1/2 z-10 bg-card/90 backdrop-blur-sm px-6 py-3 rounded-lg border border-border shadow-lg">
+        <div className="absolute top-8 left-1/2 -translate-x-1/2 z-10 bg-card/90 backdrop-blur-sm px-6 py-3 rounded-lg border border-border shadow-lg">
           <p className="text-sm text-foreground font-medium">Click and drag to select an area</p>
         </div>
       )}
@@ -138,9 +142,9 @@ const MapView = ({ onAreaConfirmed }: MapViewProps) => {
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
           <Button 
             onClick={handleConfirmArea}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-6 text-lg glow-effect shadow-lg"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-6 text-lg shadow-xl"
           >
-            Confirm Area
+            Confirm Location
           </Button>
         </div>
       )}
