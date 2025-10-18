@@ -46,19 +46,51 @@ const ChatInterface = () => {
         requirement: 'Submit a full Environmental Impact Assessment (EIA) before construction.',
         why: 'Required by law for coastal developments. Failure to obtain ECC will result in Stop-Work orders and fines.'
       }
+    ],
+    dataSources: [
+      'NASA Earthdata (Flood/Storm Risk)',
+      'Copernicus Sentinel (Coastal Change)',
+      'PhilSA (Philippine Satellite)',
+      'DENR/BFAR (Environmental Standards)',
+      'World Bank & IUCN (Conservation Data)',
+      'Google Gemini (AI Interpretation)'
     ]
   };
 
-  const schoolWarning = `⚠️ **High Disaster Risk**
-
-Based on the integrated geospatial analysis (NASA flood risk, NOAH storm surge, and PhilSA/Copernicus coastal erosion data), this area is **NOT RECOMMENDED** for school establishment.
-
-🛑 **Critical Risks:**
-- **Frequent Storm Surge Exposure:** NASA and NOAH models indicate annual storm surge events reaching 2-3 meters in this zone
-- **Active Coastal Erosion:** Copernicus satellite imagery shows shoreline retreat of 5-10 meters over the past decade
-- **Flood Vulnerability:** Low-lying topography (DTM data) makes evacuation during emergencies extremely difficult
-
-Building a school here would put students, teachers, and staff at **unacceptable safety risk** and violate DepEd site selection standards for educational institutions.`;
+  const schoolResponse = {
+    intro: '⚠️ **High Disaster Risk**\n\nBased on the integrated geospatial analysis (NASA flood risk, NOAH storm surge, and PhilSA/Copernicus coastal erosion data), this area is **NOT RECOMMENDED** for school establishment.\n\nBuilding a school here would put students, teachers, and staff at **unacceptable safety risk** and violate DepEd site selection standards for educational institutions.',
+    tableTitle: '🛑 Critical Risk Assessment',
+    rows: [
+      {
+        category: '🌊 Storm Surge Exposure (NASA/NOAH Data)',
+        requirement: 'Annual storm surge events reaching 2-3 meters in this zone',
+        why: 'Students and staff would be trapped during emergency evacuations. DepEd prohibits schools in high-risk flood zones.'
+      },
+      {
+        category: '🏖️ Active Coastal Erosion (Copernicus/PhilSA)',
+        requirement: 'Shoreline retreat of 5-10 meters over the past decade',
+        why: 'School infrastructure would be compromised within 5-10 years. Building foundations would become unstable.'
+      },
+      {
+        category: '🌊 Flood Vulnerability (DTM Topography Data)',
+        requirement: 'Low-lying topography makes evacuation extremely difficult',
+        why: 'Emergency response teams cannot reach the area during storms. Violates DepEd safety standards for educational sites.'
+      },
+      {
+        category: '📚 DepEd Site Selection Standards',
+        requirement: 'Educational institutions must be in safe, accessible locations',
+        why: 'This area fails multiple DepEd criteria for school establishment. Alternative sites are required by law.'
+      }
+    ],
+    dataSources: [
+      'NASA Earthdata (Flood/Storm Risk)',
+      'Copernicus Sentinel (Coastal Change)',
+      'PhilSA (Philippine Satellite)',
+      'DENR/BFAR (Environmental Standards)',
+      'World Bank & IUCN (Conservation Data)',
+      'Google Gemini (AI Interpretation)'
+    ]
+  };
 
   const schoolAlternative = `🔎 **Safer Alternatives Nearby**
 
@@ -82,7 +114,8 @@ If you wish to establish a school around your chosen area, there are safer alter
       } else if (lowerInput.includes('school')) {
         setMessages(prev => [...prev, { 
           role: 'assistant', 
-          content: schoolWarning 
+          content: JSON.stringify(schoolResponse),
+          isTable: true 
         }]);
         
         setTimeout(() => {
@@ -134,9 +167,14 @@ If you wish to establish a school around your chosen area, there are safer alter
                     const data = JSON.parse(message.content);
                     return (
                       <>
-                        <div className="mb-4 text-sm leading-relaxed whitespace-pre-line">
-                          {data.intro}
-                        </div>
+                        <div 
+                          className="mb-4 text-sm leading-relaxed"
+                          dangerouslySetInnerHTML={{
+                            __html: data.intro
+                              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                              .replace(/\n/g, '<br>')
+                          }}
+                        />
                         <h4 className="font-semibold text-base mb-3">{data.tableTitle}</h4>
                         <div className="overflow-x-auto">
                           <table className="w-full border-collapse">
@@ -158,6 +196,23 @@ If you wish to establish a school around your chosen area, there are safer alter
                             </tbody>
                           </table>
                         </div>
+                        
+                        {/* Data Sources Section */}
+                        {data.dataSources && (
+                          <div className="mt-6 space-y-3">
+                            <div className="flex items-center gap-2 text-sm font-semibold">
+                              <span className="text-primary">📊</span>
+                              <span>Data Sources</span>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                              {data.dataSources.map((source: string, idx: number) => (
+                                <div key={idx} className="text-xs text-muted-foreground bg-muted/30 px-3 py-2 rounded">
+                                  • {source}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </>
                     );
                   })()}
@@ -181,11 +236,12 @@ If you wish to establish a school around your chosen area, there are safer alter
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-muted text-foreground'
                   }`}
-                >
-                  {message.content.split('\n').map((line, i) => (
-                    <p key={i}>{line}</p>
-                  ))}
-                </div>
+                  dangerouslySetInnerHTML={{
+                    __html: message.content
+                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                      .replace(/\n/g, '<br>')
+                  }}
+                />
               )}
             </div>
           ))}
