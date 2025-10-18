@@ -9,6 +9,7 @@ interface Message {
   role: 'user' | 'assistant';
   content: string;
   isHtml?: boolean;
+  isTable?: boolean;
 }
 
 const ChatInterface = () => {
@@ -16,19 +17,37 @@ const ChatInterface = () => {
   const [input, setInput] = useState('');
   const navigate = useNavigate();
 
-  const hotelResponse = `✅ Yes, a hotel (or resort) is strongly recommended based on the area's favorable natural assets (stable coast, clear water), which signal high tourism value.
-
-However, strict compliance is REQUIRED. To protect your investment from environmental risks (storms, erosion) and legal issues (pollution), you must build with resilience and sustainability measures integrated into the design.
-
-🚨 Compliance & Design Checklist
-
-| Compliance Category | Specific Requirement | Why It Matters |
-|---------------------|---------------------|----------------|
-| 🌊 **Wastewater Treatment (RA 9275 Clean Water Act)** | Install a properly sized wastewater treatment plant (WWTP) for ALL sewage and greywater before it reaches the ocean. | Raw sewage will kill the coral reef and seagrass (Copernicus/PhilSA). This will collapse tourism value and trigger legal penalties. |
-| 🏗️ **Storm-Resilient Design (NSCB/NDRRMC Standards)** | Elevate structures above the maximum storm surge level (NASA/NOAH data). Use reinforced foundations. | The area is exposed to storms. Non-compliant structures will be destroyed (total loss). |
-| 🛡️ **Coastal Erosion Buffer (DENR DAO)** | Build at least 20 meters back from the high-tide line. Use natural barriers (e.g., mangroves) to reduce wave impact. | Copernicus data shows active coastal change. Buildings too close to the water will erode within 5-10 years. |
-| ♻️ **Solid Waste Management (RA 9003)** | Implement a zero-waste-to-ocean policy. Separate, treat, and recycle all waste. | Plastic waste will destroy marine life and tourism appeal. Gemini analysis flags this as the highest reputational risk. |
-| 🌱 **Environmental Clearance Certificate (ECC) from DENR** | Submit a full Environmental Impact Assessment (EIA) before construction. | Required by law for coastal developments. Failure to obtain ECC will result in Stop-Work orders and fines. |`;
+  const hotelResponse = {
+    intro: '✅ Yes, a hotel (or resort) is strongly recommended based on the area\'s favorable natural assets (stable coast, clear water), which signal high tourism value.\n\nHowever, strict compliance is REQUIRED. To protect your investment from environmental risks (storms, erosion) and legal issues (pollution), you must build with resilience and sustainability measures integrated into the design.',
+    tableTitle: '🚨 Compliance & Design Checklist',
+    rows: [
+      {
+        category: '🌊 Wastewater Treatment (RA 9275 Clean Water Act)',
+        requirement: 'Install a properly sized wastewater treatment plant (WWTP) for ALL sewage and greywater before it reaches the ocean.',
+        why: 'Raw sewage will kill the coral reef and seagrass (Copernicus/PhilSA). This will collapse tourism value and trigger legal penalties.'
+      },
+      {
+        category: '🏗️ Storm-Resilient Design (NSCB/NDRRMC Standards)',
+        requirement: 'Elevate structures above the maximum storm surge level (NASA/NOAH data). Use reinforced foundations.',
+        why: 'The area is exposed to storms. Non-compliant structures will be destroyed (total loss).'
+      },
+      {
+        category: '🛡️ Coastal Erosion Buffer (DENR DAO)',
+        requirement: 'Build at least 20 meters back from the high-tide line. Use natural barriers (e.g., mangroves) to reduce wave impact.',
+        why: 'Copernicus data shows active coastal change. Buildings too close to the water will erode within 5-10 years.'
+      },
+      {
+        category: '♻️ Solid Waste Management (RA 9003)',
+        requirement: 'Implement a zero-waste-to-ocean policy. Separate, treat, and recycle all waste.',
+        why: 'Plastic waste will destroy marine life and tourism appeal. Gemini analysis flags this as the highest reputational risk.'
+      },
+      {
+        category: '🌱 Environmental Clearance Certificate (ECC) from DENR',
+        requirement: 'Submit a full Environmental Impact Assessment (EIA) before construction.',
+        why: 'Required by law for coastal developments. Failure to obtain ECC will result in Stop-Work orders and fines.'
+      }
+    ]
+  };
 
   const schoolWarning = `⚠️ **High Disaster Risk**
 
@@ -57,8 +76,8 @@ If you wish to establish a school around your chosen area, there are safer alter
       if (lowerInput.includes('hotel')) {
         setMessages(prev => [...prev, { 
           role: 'assistant', 
-          content: hotelResponse,
-          isHtml: true 
+          content: JSON.stringify(hotelResponse),
+          isTable: true 
         }]);
       } else if (lowerInput.includes('school')) {
         setMessages(prev => [...prev, { 
@@ -109,7 +128,41 @@ If you wish to establish a school around your chosen area, there are safer alter
               key={idx}
               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              {message.isHtml ? (
+              {message.isTable ? (
+                <div className="w-full bg-card rounded-lg border border-border p-4">
+                  {(() => {
+                    const data = JSON.parse(message.content);
+                    return (
+                      <>
+                        <div className="mb-4 text-sm leading-relaxed whitespace-pre-line">
+                          {data.intro}
+                        </div>
+                        <h4 className="font-semibold text-base mb-3">{data.tableTitle}</h4>
+                        <div className="overflow-x-auto">
+                          <table className="w-full border-collapse">
+                            <thead>
+                              <tr className="bg-muted/50">
+                                <th className="border border-border p-3 text-left text-sm font-semibold">Compliance Category</th>
+                                <th className="border border-border p-3 text-left text-sm font-semibold">Specific Requirement</th>
+                                <th className="border border-border p-3 text-left text-sm font-semibold">Why It Matters</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {data.rows.map((row: any, i: number) => (
+                                <tr key={i} className="hover:bg-muted/30 transition-colors">
+                                  <td className="border border-border p-3 text-sm font-medium">{row.category}</td>
+                                  <td className="border border-border p-3 text-sm">{row.requirement}</td>
+                                  <td className="border border-border p-3 text-sm">{row.why}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </>
+                    );
+                  })()}
+                </div>
+              ) : message.isHtml ? (
                 <div
                   className={`max-w-[80%] rounded-lg p-3 ${
                     message.role === 'user'
