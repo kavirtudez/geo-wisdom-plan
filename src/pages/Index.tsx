@@ -14,12 +14,12 @@ const Index = () => {
       <header className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-md border-b border-border shadow-lg">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-              <img src="/LANDsense_Logo.png" alt="LandSense Logo" className="w-6 h-6 object-contain" />
+            <div className="h-12 w-12 bg-white rounded-lg flex items-center justify-center">
+              <img src="/LOGO.png" alt="LIKAS Logo" className="w-9 h-9 object-contain rounded" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">Landsense</h1>
-              <p className="text-xs text-muted-foreground">Sustainable Urban Planning</p>
+              <h1 className="text-2xl font-bold tracking-tight">LIKAS</h1>
+              <p className="text-xs text-muted-foreground">Land Intelligence and Knowledge for Adaptive Sustainability</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -31,7 +31,7 @@ const Index = () => {
               onClick={() => navigate('/premium')}
               className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-semibold px-4 py-2 rounded-lg shadow-lg"
             >
-              ✨ Premium
+              Premium
             </Button>
           </div>
         </div>
