@@ -40,11 +40,11 @@ const Landing = () => {
           <div className="text-center lg:text-left space-y-8">
             <div className="space-y-4">
               <div className="flex items-center justify-center lg:justify-start gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-green-500 rounded-xl flex items-center justify-center">
-                  <img src="/LANDsense_Logo.png" alt="LandSense Logo" className="w-6 h-6 object-contain" />
+                <div className="w-14 h-14 bg-white rounded-lg flex items-center justify-center">
+                  <img src="/LOGO.png" alt="LIKAS Logo" className="w-10 h-10 object-contain rounded" />
                 </div>
                 <div>
-                  <h1 className="text-4xl font-bold text-white">LandSense</h1>
+                  <h1 className="text-4xl font-bold text-white">LIKAS</h1>
                   <p className="text-blue-200 text-sm">Sustainable Urban Planning</p>
                 </div>
               </div>
@@ -65,8 +65,8 @@ const Landing = () => {
             {/* Features */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex items-center gap-3 p-4 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
-                <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                  <img src="/LANDsense_Logo.png" alt="LandSense Logo" className="w-5 h-5 object-contain" />
+                <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
+                  <img src="/LOGO.png" alt="LIKAS Logo" className="w-6 h-6 object-contain rounded" />
                 </div>
                 <div>
                   <p className="text-white font-medium">Interactive Maps</p>
@@ -131,7 +131,7 @@ const Landing = () => {
                 </div>
                 <CardTitle className="text-2xl font-bold text-white">Welcome Back</CardTitle>
                 <CardDescription className="text-gray-300">
-                  Sign in to access your LandSense dashboard
+                  Sign in to access your LIKAS dashboard
                 </CardDescription>
               </CardHeader>
               
@@ -178,14 +178,14 @@ const Landing = () => {
                         Signing In...
                       </div>
                     ) : (
-                      'Sign In to LandSense'
+                      'Sign In to LIKAS'
                     )}
                   </Button>
                 </form>
                 
                 <div className="text-center">
                   <p className="text-sm text-gray-400">
-                    Demo credentials: <span className="text-blue-400">admin@landsense.com</span> / <span className="text-blue-400">password</span>
+                    Demo credentials: <span className="text-blue-400">admin@likas.com</span> / <span className="text-blue-400">password</span>
                   </p>
                 </div>
                 
@@ -211,7 +211,7 @@ const Landing = () => {
       {/* Footer */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center">
         <p className="text-sm text-gray-400">
-          © 2024 LandSense. Powered by AI & Geospatial Intelligence.
+          © 2024 LIKAS. Powered by AI & Geospatial Intelligence.
         </p>
       </div>
     </div>

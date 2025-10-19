@@ -69,11 +69,11 @@ const Premium = () => {
       <header className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-md border-b border-border shadow-lg">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-              <img src="/LANDsense_Logo.png" alt="LandSense Logo" className="w-6 h-6 object-contain" />
+            <div className="h-12 w-12 bg-white rounded-lg flex items-center justify-center">
+              <img src="/LOGO.png" alt="LIKAS Logo" className="w-9 h-9 object-contain rounded" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-white">LandSense Premium</h1>
+              <h1 className="text-2xl font-bold tracking-tight text-white">LIKAS Premium</h1>
               <p className="text-xs text-blue-200">Advanced Geospatial Intelligence</p>
             </div>
           </div>
