@@ -23,111 +23,104 @@ const Landing = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-20 w-32 h-32 border-2 border-blue-400 rounded-full"></div>
-        <div className="absolute top-40 right-32 w-24 h-24 border-2 border-green-400 rounded-full"></div>
-        <div className="absolute bottom-32 left-1/3 w-20 h-20 border-2 border-yellow-400 rounded-full"></div>
-        <div className="absolute bottom-20 right-20 w-28 h-28 border-2 border-purple-400 rounded-full"></div>
-      </div>
+    <div className="min-h-screen relative">
+      {/* Background Image */}
+      <img src="/BACKGROUND.png" alt="Background" className="absolute inset-0 w-full h-full object-cover z-0" style={{ minHeight: '100vh' }} />
+      <div className="absolute inset-0 bg-white/30 backdrop-blur-sm z-0" />
 
       {/* Main Content */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+  <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
         <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-12 items-center">
           
           {/* Left Side - Branding */}
           <div className="text-center lg:text-left space-y-8">
             <div className="space-y-4">
-              <div className="flex items-center justify-center lg:justify-start gap-3">
-                <div className="w-14 h-14 bg-white rounded-lg flex items-center justify-center">
-                  <img src="/LOGO.png" alt="LIKAS Logo" className="w-10 h-10 object-contain rounded" />
+              <div className="flex flex-col sm:flex-row items-center sm:items-start justify-center lg:justify-start gap-2 sm:gap-3">
+                <div className="w-14 h-14 bg-white rounded-lg flex items-center justify-center mb-2 sm:mb-0">
+                  <img src="/LOGO-clear.png" alt="LIKAS Logo" className="w-10 h-10 object-contain rounded" />
                 </div>
-                <div>
-                  <h1 className="text-4xl font-bold text-white">LIKAS</h1>
-                  <p className="text-blue-200 text-sm">Sustainable Urban Planning</p>
+                <div className="flex flex-col items-center sm:items-start">
+                  <h1 className="text-3xl sm:text-4xl font-bold text-neutral-900 leading-tight">LIKAS</h1>
+                  <p className="text-neutral-700 text-xs sm:text-sm text-center sm:text-left max-w-xs sm:max-w-none">Land Intelligence and Knowledge for Adaptive Sustainability</p>
                 </div>
               </div>
               
-              <h2 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
+              <h2 className="text-4xl lg:text-5xl font-bold text-neutral-900 leading-tight">
                 AI-Powered
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400">
+                <span className="block font-bold bg-gradient-to-r from-blue-600 to-teal-400 text-transparent bg-clip-text leading-tight pb-1">
                   Geospatial Intelligence
                 </span>
               </h2>
               
-              <p className="text-xl text-gray-300 max-w-lg">
+              <p className="text-xl text-neutral-800 max-w-lg mx-auto text-center lg:mx-0 lg:text-left">
                 Transform land analysis with cutting-edge AI technology. 
                 Make informed decisions for sustainable urban development.
               </p>
             </div>
 
             {/* Features */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex items-center gap-3 p-4 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
-                <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center">
-                  <span className="text-green-400">🗺️</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+              <div className="flex items-center gap-3 p-3 bg-white/60 shadow rounded-lg border border-white/20 backdrop-blur-md">
+                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                  <span className="text-green-500 text-lg">🗺️</span>
                 </div>
                 <div>
-                  <p className="text-white font-medium">Interactive Maps</p>
-                  <p className="text-gray-400 text-sm">Real-time geospatial data</p>
+                  <p className="text-base font-semibold text-neutral-900 mb-0.5">Interactive Maps</p>
+                  <p className="text-sm text-gray-500">Real-time geospatial data</p>
                 </div>
               </div>
-              
-              <div className="flex items-center gap-3 p-4 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
-                <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center">
-                  <span className="text-green-400">🤖</span>
+              <div className="flex items-center gap-3 p-3 bg-white/60 shadow rounded-lg border border-white/20 backdrop-blur-md">
+                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <span className="text-blue-500 text-lg">🤖</span>
                 </div>
                 <div>
-                  <p className="text-white font-medium">AI Analysis</p>
-                  <p className="text-gray-400 text-sm">Smart land assessment</p>
+                  <p className="text-base font-semibold text-neutral-900 mb-0.5">AI Analysis</p>
+                  <p className="text-sm text-gray-500">Smart land assessment</p>
                 </div>
               </div>
-              
-              <div className="flex items-center gap-3 p-4 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
-                <div className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                  <span className="text-purple-400">📊</span>
+              <div className="flex items-center gap-3 p-3 bg-white/60 shadow rounded-lg border border-white/20 backdrop-blur-md">
+                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <span className="text-purple-500 text-lg">📊</span>
                 </div>
                 <div>
-                  <p className="text-white font-medium">Data Insights</p>
-                  <p className="text-gray-400 text-sm">Comprehensive reports</p>
+                  <p className="text-base font-semibold text-neutral-900 mb-0.5">Data Insights</p>
+                  <p className="text-sm text-gray-500">Comprehensive reports</p>
                 </div>
               </div>
-              
-              <div className="flex items-center gap-3 p-4 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
-                <div className="w-8 h-8 bg-yellow-500/20 rounded-lg flex items-center justify-center">
-                  <span className="text-yellow-400">🌱</span>
+              <div className="flex items-center gap-3 p-3 bg-white/60 shadow rounded-lg border border-white/20 backdrop-blur-md">
+                <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+                  <span className="text-yellow-500 text-lg">🌱</span>
                 </div>
                 <div>
-                  <p className="text-white font-medium">Sustainability</p>
-                  <p className="text-gray-400 text-sm">Eco-friendly planning</p>
+                  <p className="text-base font-semibold text-neutral-900 mb-0.5">Sustainability</p>
+                  <p className="text-sm text-gray-500">Eco-friendly planning</p>
                 </div>
               </div>
             </div>
 
             {/* Stats */}
-            <div className="flex flex-wrap gap-6 text-center">
-              <div>
-                <p className="text-2xl font-bold text-white">500+</p>
-                <p className="text-gray-400 text-sm">Land Assessments</p>
+            <div className="flex flex-wrap gap-6 justify-center text-center mt-1">
+              <div className="min-w-[90px]">
+                <p className="text-xl font-extrabold text-neutral-900 mb-0.5">500+</p>
+                <p className="text-xs text-gray-500">Land Assessments</p>
               </div>
-              <div>
-                <p className="text-2xl font-bold text-white">98%</p>
-                <p className="text-gray-400 text-sm">Accuracy Rate</p>
+              <div className="min-w-[90px]">
+                <p className="text-xl font-extrabold text-neutral-900 mb-0.5">98%</p>
+                <p className="text-xs text-gray-500">Accuracy Rate</p>
               </div>
-              <div>
-                <p className="text-2xl font-bold text-white">24/7</p>
-                <p className="text-gray-400 text-sm">AI Monitoring</p>
+              <div className="min-w-[90px]">
+                <p className="text-xl font-extrabold text-neutral-900 mb-0.5">24/7</p>
+                <p className="text-xs text-gray-500">AI Monitoring</p>
               </div>
             </div>
           </div>
 
           {/* Right Side - Login Form */}
           <div className="flex justify-center lg:justify-end">
-            <Card className="w-full max-w-md bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl">
+            <Card className="w-full max-w-md bg-white/60 backdrop-blur-2xl border border-white/30 shadow-2xl" style={{ boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)' }}>
               <CardHeader className="text-center space-y-2">
-                <CardTitle className="text-2xl font-bold text-white">Welcome Back</CardTitle>
-                <CardDescription className="text-gray-300">
+                <CardTitle className="text-2xl font-bold text-neutral-900">Welcome Back</CardTitle>
+                <CardDescription className="text-neutral-700">
                   Sign in to access your LIKAS dashboard
                 </CardDescription>
               </CardHeader>
@@ -135,7 +128,7 @@ const Landing = () => {
               <CardContent className="space-y-6">
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium text-gray-300">
+                    <label htmlFor="email" className="text-sm font-medium text-neutral-700">
                       Email Address
                     </label>
                     <Input
@@ -144,13 +137,13 @@ const Landing = () => {
                       placeholder="Enter your email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-blue-400 focus:ring-blue-400/20"
+                      className="bg-white/30 border border-gray-200 text-neutral-900 placeholder:text-neutral-500 focus:border-blue-400 focus:ring-blue-400/20"
                       required
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <label htmlFor="password" className="text-sm font-medium text-gray-300">
+                    <label htmlFor="password" className="text-sm font-medium text-neutral-700">
                       Password
                     </label>
                     <Input
@@ -159,7 +152,7 @@ const Landing = () => {
                       placeholder="Enter your password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-blue-400 focus:ring-blue-400/20"
+                      className="bg-white/30 border border-gray-200 text-neutral-900 placeholder:text-neutral-500 focus:border-blue-400 focus:ring-blue-400/20"
                       required
                     />
                   </div>
@@ -171,7 +164,7 @@ const Landing = () => {
                   >
                     {isLoading ? (
                       <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        <div className="w-4 h-4 border-2 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
                         Signing In...
                       </div>
                     ) : (
@@ -181,13 +174,13 @@ const Landing = () => {
                 </form>
                 
                 <div className="text-center">
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-neutral-700">
                     Demo credentials: <span className="text-blue-400">admin@likas.com</span> / <span className="text-blue-400">password</span>
                   </p>
                 </div>
                 
                 <div className="pt-4 border-t border-white/10">
-                  <div className="flex items-center justify-center gap-2 text-sm text-gray-400">
+                  <div className="flex items-center justify-center gap-2 text-sm text-neutral-700">
                     <Badge variant="secondary" className="bg-green-500/20 text-green-400 border-green-500/30">
                       🔒 Secure
                     </Badge>
@@ -207,7 +200,7 @@ const Landing = () => {
 
       {/* Footer */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center">
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-neutral-700">
           © 2024 LIKAS. Powered by AI & Geospatial Intelligence.
         </p>
       </div>
