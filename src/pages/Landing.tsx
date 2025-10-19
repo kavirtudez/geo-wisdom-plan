@@ -49,7 +49,7 @@ const Landing = () => {
                 </div>
               </div>
               
-              <h2 className="text-5xl lg:text-6xl font-bold text-white leading-tight">
+              <h2 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
                 AI-Powered
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400">
                   Geospatial Intelligence
@@ -65,8 +65,8 @@ const Landing = () => {
             {/* Features */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex items-center gap-3 p-4 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
-                <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
-                  <img src="/LOGO.png" alt="LIKAS Logo" className="w-6 h-6 object-contain rounded" />
+                <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center">
+                  <span className="text-green-400">🗺️</span>
                 </div>
                 <div>
                   <p className="text-white font-medium">Interactive Maps</p>
@@ -126,9 +126,6 @@ const Landing = () => {
           <div className="flex justify-center lg:justify-end">
             <Card className="w-full max-w-md bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl">
               <CardHeader className="text-center space-y-2">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-green-500 rounded-2xl flex items-center justify-center mx-auto">
-                  <span className="text-3xl">🔐</span>
-                </div>
                 <CardTitle className="text-2xl font-bold text-white">Welcome Back</CardTitle>
                 <CardDescription className="text-gray-300">
                   Sign in to access your LIKAS dashboard
@@ -170,7 +167,7 @@ const Landing = () => {
                   <Button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
                   >
                     {isLoading ? (
                       <div className="flex items-center gap-2">
