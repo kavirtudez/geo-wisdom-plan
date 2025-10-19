@@ -18,8 +18,8 @@ const Index = () => {
               <img src="/LOGO.png" alt="LIKAS Logo" className="w-9 h-9 object-contain rounded" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">Landsense</h1>
-              <p className="text-xs text-muted-foreground">Sustainable Urban Planning</p>
+              <h1 className="text-2xl font-bold tracking-tight">LIKAS</h1>
+              <p className="text-xs text-muted-foreground">Land Intelligence and Knowledge for Adaptive Sustainability</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -31,7 +31,7 @@ const Index = () => {
               onClick={() => navigate('/premium')}
               className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-semibold px-4 py-2 rounded-lg shadow-lg"
             >
-              ✨ Premium
+              Premium
             </Button>
           </div>
         </div>

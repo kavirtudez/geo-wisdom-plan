@@ -79,7 +79,7 @@ const Premium = () => {
           </div>
           <div className="flex items-center gap-4">
             <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white">
-              ✨ Premium Features
+              Premium Features
             </Badge>
             <Button 
               onClick={() => navigate('/app')}
